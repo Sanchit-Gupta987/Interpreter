@@ -64,7 +64,6 @@ public class SpartieScanner {
         return token;
     }
 
-    // TODO: Complete implementation
     private Token getSingleCharacterToken() {
 
         char nextCharacter = source.charAt(current);
@@ -186,16 +185,40 @@ public class SpartieScanner {
         // another double quote
         // But, if you do not hit another double quote, you should report an error
         char nextCharacter = source.charAt(current);
+        if (nextCharacter == '"'){
 
+        }
         String string = null;
 
         return null;
     }
 
-    // TODO: Complete implementation
     private Token getNumericToken() {
         // Hint: Follow similar idea of String, but in this case if it is a digit
         // You should only allow one period in your scanner
+        boolean seenPeriod = false;
+        String number = null;
+        while (!isAtEnd()) {
+            char nextCharacter = source.charAt(current);
+            if (isDigit(nextCharacter)) {
+                number = number + nextCharacter;
+                current++;
+            } else if (nextCharacter == '.' && !seenPeriod) {
+                if (number == null) {
+                    number = "0"; // Handle case where .5 is given instead of 0.5
+                }
+                number = number + nextCharacter;
+                seenPeriod = true;
+                current++;
+            } else {
+                break;
+            }
+        }
+
+         if (number != null) {
+             return new Token(TokenType.NUMBER, number, line);
+         }
+
         return null;
     }
 
