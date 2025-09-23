@@ -105,9 +105,9 @@ public class SpartieScanner {
                 break;
             // Not handling ! here since it can be ! or != (done in getcomparisontoken)
             case '\n':
-                type = TokenType.EOL;
+                current++;
                 line++;
-                break;
+                return new Token(TokenType.IGNORE, "", line);
             default:
                 if (nextCharacter == ' ' || nextCharacter == '\r' || nextCharacter == '\t') {
                     current++; // Just ignore whitespace
