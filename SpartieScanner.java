@@ -34,7 +34,8 @@ public class SpartieScanner {
 
         Token token = null;
         while (!isAtEnd() && (token = getNextToken()) != null) {
-            if (token.type != TokenType.IGNORE) tokens.add(token);
+            if (token.type != TokenType.IGNORE)
+                tokens.add(token);
         }
 
         return tokens;
@@ -43,13 +44,19 @@ public class SpartieScanner {
     private Token getNextToken() {
         Token token = null;
 
-        // Try to get each type of token, starting with a simple token, and getting a little more complex
+        // Try to get each type of token, starting with a simple token, and getting a
+        // little more complex
         token = getSingleCharacterToken();
-        if (token == null) token = getComparisonToken();
-        if (token == null) token = getDivideOrComment();
-        if (token == null) token = getStringToken();
-        if (token == null) token = getNumericToken();
-        if (token == null) token = getIdentifierOrReservedWord();
+        if (token == null)
+            token = getComparisonToken();
+        if (token == null)
+            token = getDivideOrComment();
+        if (token == null)
+            token = getStringToken();
+        if (token == null)
+            token = getNumericToken();
+        if (token == null)
+            token = getIdentifierOrReservedWord();
         if (token == null) {
             error(line, String.format("Unexpected character '%c' at %d", source.charAt(current), current));
         }
@@ -59,56 +66,124 @@ public class SpartieScanner {
 
     // TODO: Complete implementation
     private Token getSingleCharacterToken() {
-        // Hint: Examine the character, if you can get a token, return it, otherwise return null
-        // Hint: Be careful with the divide, we have to know if it is a single character
 
         char nextCharacter = source.charAt(current);
 
-        // Hint: Start of not knowing what the token is, if we can determine it, return it, otherwise, return null
         TokenType type = TokenType.UNDEFINED;
 
         switch (nextCharacter) {
-        case ';': type = TokenType.SEMICOLON; break;
-        case ',': type = TokenType.COMMA; break;
-        case '{': type = TokenType.LEFT_BRACE; break;
-        case '}': type = TokenType.RIGHT_BRACE; break;
-        case '(': type = TokenType.LEFT_PAREN; break;
-        case ')': type = TokenType.RIGHT_PAREN; break;
-        case '*': type = TokenType.MULTIPLY; break; // Not handling divide here, that is handled separately
-        case '+': type = TokenType.ADD; break;
-        case '-': type = TokenType.SUBTRACT; break;
-        case '!': type = TokenType.NOT; break;
+            case ';':
+                type = TokenType.SEMICOLON;
+                break;
+            case ',':
+                type = TokenType.COMMA;
+                break;
+            // Not handling assign here, since it can be = or == (done in getcomparisontoken)
+            case '{':
+                type = TokenType.LEFT_BRACE;
+                break;
+            case '}':
+                type = TokenType.RIGHT_BRACE;
+                break;
+            case '(':
+                type = TokenType.LEFT_PAREN;
+                break;
+            case ')':
+                type = TokenType.RIGHT_PAREN;
+                break;
+            // Not handling divide here since it can be / or // (done in getdivideorcomment)
+            case '*':
+                type = TokenType.MULTIPLY;
+                break;
+            case '+':
+                type = TokenType.ADD;
+                break;
+            case '-':
+                type = TokenType.SUBTRACT;
+                break;
+            // Not handling ! here since it can be ! or != (done in getcomparisontoken)
+
+
+            // have to do whitespace / line handling here 
         }
 
         if (type != TokenType.UNDEFINED) {
             current++; // Go to next character
             return new Token(type, String.valueOf(nextCharacter), line);
         }
-        // If we get here, we did not find a single character token, then we return null
         return null;
-        
+
     }
 
-    // TODO: Complete implementation
     private Token getComparisonToken() {
-        // Hint: Examine the character for a comparison but check the next character (as long as one is available)
-        // For example: < or <=
         char nextCharacter = source.charAt(current);
+        TokenType type = TokenType.UNDEFINED;
 
+        switch (nextCharacter) {
+            case '=':
+                if (examine('=')) {
+                    type = TokenType.EQUIVALENT;
+                    current += 2; // Advance twice
+                } else {
+                    type = TokenType.ASSIGN;
+                    current++; // Advance once
+                }
+                break;
+            case '!':
+                if (examine('=')) {
+                    type = TokenType.NOT_EQUAL;
+                    current += 2; // Advance twice
+                } else {
+                    type = TokenType.NOT;
+                    current++; // Advance once
+                }
+                break;
+            case '<':
+                if (examine('=')) {
+                    type = TokenType.LESS_EQUAL;
+                    current += 2; // Advance twice
+                } else {
+                    type = TokenType.LESS_THAN;
+                    current++; // Advance once
+                }
+                break;
+            case '>':
+                if (examine('=')) {
+                    type = TokenType.GREATER_EQUAL;
+                    current += 2; // Advance twice
+                } else {
+                    type = TokenType.GREATER_THAN;
+                    current++; // Advance once
+                }
+                break;
+        }
         return null;
     }
 
-    // TODO: Complete implementation
     private Token getDivideOrComment() {
-        // Hint: Examine the character for a comparison but check the next character (as long as one is available)
         char nextCharacter = source.charAt(current);
 
+        if (nextCharacter == '/') {
+            // This is either a comment or a divide
+            if (examine('/')) {
+                // This is a comment, so keep advancing until you hit the end of the line
+                while (!isAtEnd() && source.charAt(current) != '\n') {
+                    current++;
+                }
+                return new Token(TokenType.IGNORE, "", line);
+            } else {
+                // This is a divide
+                current++;
+                return new Token(TokenType.DIVIDE, "/", line);
+            }
+        }
         return null;
     }
 
     // TODO: Complete implementation
     private Token getStringToken() {
-        // Hint: Check if you have a double quote, then keep reading until you hit another double quote
+        // Hint: Check if you have a double quote, then keep reading until you hit
+        // another double quote
         // But, if you do not hit another double quote, you should report an error
         char nextCharacter = source.charAt(current);
 
@@ -126,10 +201,11 @@ public class SpartieScanner {
 
     // TODO: Complete implementation
     private Token getIdentifierOrReservedWord() {
-        // Hint: Assume first it is an identifier and once you capture it, then check if it is a reserved word.
+        // Hint: Assume first it is an identifier and once you capture it, then check if
+        // it is a reserved word.
         return null;
     }
-    
+
     // Helper Methods
     private boolean isDigit(char character) {
         return character >= '0' && character <= '9';
@@ -143,8 +219,10 @@ public class SpartieScanner {
     // This will check if a character is what you expect, if so, it will advance
     // Useful for checking <= or //
     private boolean examine(char expected) {
-        if (isAtEnd()) return false;
-        if (source.charAt(current + 1) != expected) return false;
+        if (isAtEnd())
+            return false;
+        if (source.charAt(current + 1) != expected)
+            return false;
 
         // Otherwise, it matches it, so advance
         return true;
