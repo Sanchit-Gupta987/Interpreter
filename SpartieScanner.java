@@ -194,8 +194,7 @@ public class SpartieScanner {
     }
 
     private Token getNumericToken() {
-        // Hint: Follow similar idea of String, but in this case if it is a digit
-        // You should only allow one period in your scanner
+        
         boolean seenPeriod = false;
         String number = null;
         while (!isAtEnd()) {
