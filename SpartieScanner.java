@@ -64,8 +64,11 @@ public class SpartieScanner {
         return token;
     }
 
+    // TODO: have to do whitespace / line handling here 
     private Token getSingleCharacterToken() {
-
+        if (isAtEnd())
+            // EOF token?
+            return new Token(TokenType.EOF, "", line);
         char nextCharacter = source.charAt(current);
 
         TokenType type = TokenType.UNDEFINED;
@@ -101,7 +104,15 @@ public class SpartieScanner {
                 type = TokenType.SUBTRACT;
                 break;
             // Not handling ! here since it can be ! or != (done in getcomparisontoken)
-
+            case '\n':
+                type = TokenType.EOL;
+                line++;
+                break;
+            default:
+                if (nextCharacter == ' ' || nextCharacter == '\r' || nextCharacter == '\t') {
+                    current++; // Just ignore whitespace
+                    return new Token(TokenType.IGNORE, "", line);
+                }
 
             // have to do whitespace / line handling here 
         }
@@ -117,44 +128,55 @@ public class SpartieScanner {
     private Token getComparisonToken() {
         char nextCharacter = source.charAt(current);
         TokenType type = TokenType.UNDEFINED;
-
+        String lex = null;
         switch (nextCharacter) {
             case '=':
                 if (examine('=')) {
                     type = TokenType.EQUIVALENT;
                     current += 2; // Advance twice
+                    lex = "==";
                 } else {
                     type = TokenType.ASSIGN;
                     current++; // Advance once
+                    lex = "=";
                 }
                 break;
             case '!':
                 if (examine('=')) {
                     type = TokenType.NOT_EQUAL;
                     current += 2; // Advance twice
+                    lex = "!=";
                 } else {
                     type = TokenType.NOT;
                     current++; // Advance once
+                    lex = "!";
                 }
                 break;
             case '<':
                 if (examine('=')) {
                     type = TokenType.LESS_EQUAL;
                     current += 2; // Advance twice
+                    lex = "<=";
                 } else {
                     type = TokenType.LESS_THAN;
                     current++; // Advance once
+                    lex = "<";
                 }
                 break;
             case '>':
                 if (examine('=')) {
                     type = TokenType.GREATER_EQUAL;
                     current += 2; // Advance twice
+                    lex = ">=";
                 } else {
                     type = TokenType.GREATER_THAN;
                     current++; // Advance once
+                    lex = ">";
                 }
                 break;
+        }
+        if (type != TokenType.UNDEFINED) {
+            return new Token(type, lex, line);
         }
         return null;
     }
@@ -179,30 +201,38 @@ public class SpartieScanner {
         return null;
     }
 
-    // TODO: Complete implementation
     private Token getStringToken() {
-        // Hint: Check if you have a double quote, then keep reading until you hit
-        // another double quote
-        // But, if you do not hit another double quote, you should report an error
         char nextCharacter = source.charAt(current);
         if (nextCharacter == '"'){
-
+            current++;
+            int beg = current;
+            while (!isAtEnd() && source.charAt(current) != '"' && source.charAt(current) != '\n') {
+            current++;
         }
-        String string = null;
-
+            // if new line or end of file reached before closing quote
+            if (isAtEnd() || source.charAt(current) == '\n') {
+                error(line, "Error! Unterminated string.");
+            }
+            String str = source.substring(beg, current);
+            current++; // move past closing quote
+            return new Token(TokenType.STRING, str, line, str);
+        }
         return null;
     }
 
     private Token getNumericToken() {
-        
+
         boolean seenPeriod = false;
-        String number = null;
+        String number = "";
         while (!isAtEnd()) {
             char nextCharacter = source.charAt(current);
             if (isDigit(nextCharacter)) {
                 number = number + nextCharacter;
                 current++;
-            } else if (nextCharacter == '.' && !seenPeriod) {
+            } else if (nextCharacter == '.') {
+                if (seenPeriod) {
+                    error(line, "Error! Invalid number format with multiple decimal points.");
+                }
                 if (number == null) {
                     number = "0"; // Handle case where .5 is given instead of 0.5
                 }
@@ -214,8 +244,8 @@ public class SpartieScanner {
             }
         }
 
-         if (number != null) {
-             return new Token(TokenType.NUMBER, number, line);
+         if (!number.isEmpty()) {
+             return new Token(TokenType.NUMBER, number, line, Double.parseDouble(number));
          }
 
         return null;
