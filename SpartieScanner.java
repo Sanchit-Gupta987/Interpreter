@@ -60,14 +60,33 @@ public class SpartieScanner {
     // TODO: Complete implementation
     private Token getSingleCharacterToken() {
         // Hint: Examine the character, if you can get a token, return it, otherwise return null
-        // Hint: Be careful with the divide, we have ot know if it is a single character
+        // Hint: Be careful with the divide, we have to know if it is a single character
 
         char nextCharacter = source.charAt(current);
 
         // Hint: Start of not knowing what the token is, if we can determine it, return it, otherwise, return null
         TokenType type = TokenType.UNDEFINED;
 
+        switch (nextCharacter) {
+        case ';': type = TokenType.SEMICOLON; break;
+        case ',': type = TokenType.COMMA; break;
+        case '{': type = TokenType.LEFT_BRACE; break;
+        case '}': type = TokenType.RIGHT_BRACE; break;
+        case '(': type = TokenType.LEFT_PAREN; break;
+        case ')': type = TokenType.RIGHT_PAREN; break;
+        case '*': type = TokenType.MULTIPLY; break; // Not handling divide here, that is handled separately
+        case '+': type = TokenType.ADD; break;
+        case '-': type = TokenType.SUBTRACT; break;
+        case '!': type = TokenType.NOT; break;
+        }
+
+        if (type != TokenType.UNDEFINED) {
+            current++; // Go to next character
+            return new Token(type, String.valueOf(nextCharacter), line);
+        }
+        // If we get here, we did not find a single character token, then we return null
         return null;
+        
     }
 
     // TODO: Complete implementation
