@@ -64,7 +64,6 @@ public class SpartieScanner {
         return token;
     }
 
-    // TODO: have to do whitespace / line handling here 
     private Token getSingleCharacterToken() {
         if (isAtEnd())
             // EOF token?
@@ -109,12 +108,10 @@ public class SpartieScanner {
                 line++;
                 return new Token(TokenType.IGNORE, "", line);
             default:
-                if (nextCharacter == ' ' || nextCharacter == '\r' || nextCharacter == '\t') {
-                    current++; // Just ignore whitespace
+                if (nextCharacter == '\s' || nextCharacter == '\t' || nextCharacter == '\r') { // Just ignore whitespace
+                    current++;
                     return new Token(TokenType.IGNORE, "", line);
                 }
-
-            // have to do whitespace / line handling here 
         }
 
         if (type != TokenType.UNDEFINED) {
