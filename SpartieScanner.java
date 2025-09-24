@@ -220,20 +220,20 @@ public class SpartieScanner {
     private Token getNumericToken() {
 
         boolean seenPeriod = false;
-        String number = "";
+        StringBuilder number = new StringBuilder();
         while (!isAtEnd()) {
             char nextCharacter = source.charAt(current);
             if (isDigit(nextCharacter)) {
-                number = number + nextCharacter;
+                number.append(nextCharacter);
                 current++;
             } else if (nextCharacter == '.') {
                 if (seenPeriod) {
                     error(line, "Error! Invalid number format with multiple decimal points.");
                 }
                 if (number == null) {
-                    number = "0"; // Handle case where .5 is given instead of 0.5
+                    number.append("0"); // Handle case where .5 is given instead of 0.5
                 }
-                number = number + nextCharacter;
+                number.append(nextCharacter);
                 seenPeriod = true;
                 current++;
             } else {
@@ -242,7 +242,7 @@ public class SpartieScanner {
         }
 
          if (!number.isEmpty()) {
-             return new Token(TokenType.NUMBER, number, line, Double.parseDouble(number));
+             return new Token(TokenType.NUMBER,number.toString(), line, Double.parseDouble(number.toString()));
          }
 
         return null;
