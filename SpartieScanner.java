@@ -230,7 +230,7 @@ public class SpartieScanner {
                 if (seenPeriod) {
                     error(line, "Error! Invalid number format with multiple decimal points.");
                 }
-                if (number == null) {
+                if (number.isEmpty()) {
                     number.append("0"); // Handle case where .5 is given instead of 0.5
                 }
                 number.append(nextCharacter);
