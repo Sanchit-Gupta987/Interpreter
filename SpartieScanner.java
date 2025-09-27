@@ -1,3 +1,4 @@
+//Sanchit Gupta and Ritvik Sajja
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,6 @@ public class SpartieScanner {
         keywords.put("print", TokenType.PRINT);
         keywords.put("null", TokenType.NULL);
     }
-
     public SpartieScanner(String source) {
         this.source = source;
     }
@@ -101,6 +101,9 @@ public class SpartieScanner {
                 break;
             case '-':
                 type = TokenType.SUBTRACT;
+                break;
+            case '|':
+                type = TokenType.OR;
                 break;
             // Not handling ! here since it can be ! or != (done in getcomparisontoken)
             case '\n':
@@ -252,7 +255,25 @@ public class SpartieScanner {
     private Token getIdentifierOrReservedWord() {
         // Hint: Assume first it is an identifier and once you capture it, then check if
         // it is a reserved word.
-        return null;
+        if(isAtEnd())
+            return null;
+            char first = source.charAt(current);
+            if(!isAlpha(first)) {
+                return null;
+            }
+            int beg = current;
+            current++;
+            while(!isAtEnd()) {
+                char nextC = source.charAt(current);
+                if(isAlpha(nextC) || isDigit(nextC)) {
+                    current++;
+                } else {
+                    break;
+                }
+            }
+            String ident = source.substring(beg, current);
+            TokenType type = keywords.getOrDefault(ident, TokenType.IDENTIFIER);
+            return new Token(type, ident, line);
     }
 
     // Helper Methods

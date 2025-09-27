@@ -1,0 +1,111 @@
+TEST 1
+Line: 1 Token: MULTIPLY Text: *
+Line: 1 Token: ADD Text: +
+Line: 1 Token: SUBTRACT Text: -
+Line: 1 Token: SEMICOLON Text: ;
+Line: 1 Token: LESS_THAN Text: <
+Line: 1 Token: LESS_EQUAL Text: <=
+
+TEST 2
+Line: 1 Token: MULTIPLY Text: *
+Line: 1 Token: ADD Text: +
+Line: 1 Token: SUBTRACT Text: -
+Line: 1 Token: SEMICOLON Text: ;
+Line: 1 Token: LESS_THAN Text: <
+Line: 1 Token: LESS_EQUAL Text: <=
+Line: 3 Token: MULTIPLY Text: *
+Line: 3 Token: ADD Text: +
+
+TEST 3
+Line: 1 Token: MULTIPLY Text: *
+Line: 1 Token: ADD Text: +
+Line: 1 Token: SUBTRACT Text: -
+Line: 1 Token: SEMICOLON Text: ;
+Line: 1 Token: LESS_THAN Text: <
+Line: 1 Token: LESS_EQUAL Text: <=
+Line: 3 Token: MULTIPLY Text: *
+Line: 3 Token: ADD Text: +
+Line: 4 Token: STRING Text: hello test
+
+TEST 4
+Line: 1 Token: MULTIPLY Text: *
+Line: 1 Token: ADD Text: +
+Line: 1 Token: SUBTRACT Text: -
+Line: 1 Token: SEMICOLON Text: ;
+Line: 1 Token: LESS_THAN Text: <
+Line: 1 Token: LESS_EQUAL Text: <=
+Line: 3 Token: MULTIPLY Text: *
+Line: 3 Token: ADD Text: +
+Line: 4 Token: STRING Text: hello test
+Line: 5 Token: NUMBER Text: 345
+Line: 6 Token: NUMBER Text: 345.12
+
+TEST 5
+Line: 1 Token: MULTIPLY Text: *
+Line: 1 Token: ADD Text: +
+Line: 1 Token: SUBTRACT Text: -
+Line: 1 Token: SEMICOLON Text: ;
+Line: 1 Token: LESS_THAN Text: <
+Line: 1 Token: LESS_EQUAL Text: <=
+Line: 3 Token: MULTIPLY Text: *
+Line: 3 Token: ADD Text: +
+Line: 4 Token: STRING Text: hello test
+Line: 5 Token: NUMBER Text: 345
+Line: 6 Token: NUMBER Text: 345.12
+Line: 7 Token: VAR Text: var
+Line: 7 Token: IDENTIFIER Text: name
+Line: 7 Token: ASSIGN Text: =
+Line: 7 Token: STRING Text: spartie
+
+ 
+TEST 6
+Line: 1 Token: MULTIPLY Text: *
+Line: 1 Token: ADD Text: +
+Line: 1 Token: SUBTRACT Text: -
+Line: 1 Token: SEMICOLON Text: ;
+Line: 1 Token: LESS_THAN Text: <
+Line: 1 Token: LESS_EQUAL Text: <=
+Line: 3 Token: MULTIPLY Text: *
+Line: 3 Token: ADD Text: +
+Line: 4 Token: STRING Text: hello test
+Line: 5 Token: NUMBER Text: 345
+Line: 6 Token: NUMBER Text: 345.12
+Line: 7 Token: VAR Text: var
+Line: 7 Token: IDENTIFIER Text: name
+Line: 7 Token: ASSIGN Text: =
+Line: 7 Token: STRING Text: spartie
+Line: 8 Token: IF Text: if
+Line: 8 Token: LEFT_PAREN Text: (
+Line: 8 Token: IDENTIFIER Text: x
+Line: 8 Token: EQUIVALENT Text: ==
+Line: 8 Token: NUMBER Text: 5
+Line: 8 Token: OR Text: |
+Line: 8 Token: IDENTIFIER Text: x
+Line: 8 Token: EQUIVALENT Text: ==
+Line: 8 Token: NUMBER Text: 2
+Line: 8 Token: RIGHT_PAREN Text: )
+Line: 8 Token: LEFT_BRACE Text: {
+Line: 9 Token: PRINT Text: print
+Line: 9 Token: STRING Text: It equals!
+Line: 10 Token: RIGHT_BRACE Text: }
+Line: 11 Token: ELSE Text: else
+Line: 11 Token: LEFT_BRACE Text: {
+Line: 12 Token: PRINT Text: print
+Line: 12 Token: IDENTIFIER Text: x
+Line: 13 Token: RIGHT_BRACE Text: }
+Line: 14 Token: WHILE Text: while
+Line: 14 Token: LEFT_PAREN Text: (
+Line: 14 Token: IDENTIFIER Text: x
+Line: 14 Token: LESS_THAN Text: <
+Line: 14 Token: NUMBER Text: 5
+Line: 14 Token: RIGHT_PAREN Text: )
+Line: 14 Token: LEFT_BRACE Text: {
+Line: 15 Token: IDENTIFIER Text: x
+Line: 15 Token: ASSIGN Text: =
+Line: 15 Token: IDENTIFIER Text: x
+Line: 15 Token: ADD Text: +
+Line: 15 Token: NUMBER Text: 1
+Line: 16 Token: RIGHT_BRACE Text: }
+
+TEST 7
+Error occurred on line 1 : Unexpected character '_' at 0
